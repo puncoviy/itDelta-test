@@ -44,7 +44,7 @@ galleryItem.forEach(function (item, index) {
 
             const pD = document.createElement('p');
             pD.className = 'modal__comment-date';
-            pD.textContent = commentsList[x].date;
+            pD.textContent = new Date(commentsList[x].date);
             dC.appendChild(pD);
 
             const pT = document.createElement('p');
@@ -56,7 +56,32 @@ galleryItem.forEach(function (item, index) {
         }
 
         postComment.addEventListener('click', function(){
-            console.log(newCommentText.textContent)
+            let str = newCommentText.value;
+            if (!str.trim()) {
+                newCommentText.placeholder = 'Enter your message here';
+            } else {
+                let newComment = {};
+                newComment.text = newCommentText.value;
+                newComment.date = new Date();
+                commentsList.push(newComment);
+                
+                const dC = document.createElement('div');
+                dC.className = 'modal__comment';
+
+                const pD = document.createElement('p');
+                pD.className = 'modal__comment-date';
+                pD.textContent = new Date(newComment.date);
+                dC.appendChild(pD);
+
+                const pT = document.createElement('p');
+                pT.className = 'modal__comment-text';
+                pT.textContent = newComment.text;
+                dC.appendChild(pT);
+
+                commentBox.prepend(dC);
+                newCommentText.placeholder = '';
+                newCommentText.value = '';
+            }
         })
 
         modal.addEventListener('click', function(){
