@@ -112,21 +112,42 @@ body {
     background: rgba(107, 114, 128, 0.75);
 }
 
-.modal.active {
+.modal__box {
+    position: absolute;
+    z-index: -10;
+    opacity: 0;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);
+    width: 100%;
+    max-width: 692px;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 45px auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0s;
+}
+
+.modal.active,
+.modal__box.active {
     z-index: 10;
     opacity: 1;
     transition: opacity 0.7s;
 }
 
-.modal__box {
+.modal__box-close {
+    position: absolute;
+    display: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    content: '';
+    right: -15px;
+    top: -15px;
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 20px 25px -5px rgba(0, 0, 0, 0.1), 0px 10px 10px -5px rgba(0, 0, 0, 0.04);
-    max-width: 692px;
-    margin: 45px auto;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
 }
 
 .modal__img {
@@ -148,11 +169,10 @@ body {
     color: #6B7280;
 }
 
-.modal__comment-text {
-}
 .modal__new-comment {
     order: 1;
 }
+
 .modal__new-comment-title {
     color: #374151;
 }

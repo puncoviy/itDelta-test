@@ -3,6 +3,8 @@ const modalImg = document.querySelector('.modal__img');
 const commentBox = document.querySelector('.modal__box');
 const modalCommentDate = document.querySelector('.modal__comment-date');
 const modalCommentText = document.querySelector('.modal__comment-text');
+const postComment = document.querySelector('.modal__new-comment-btn');
+const newCommentText = document.querySelector('.modal__new-comment-text');
 
 const galleryItem = document.querySelectorAll('.gallery__item');
 const galleryItemImg = document.querySelectorAll('.gallery__item-img');
@@ -32,10 +34,10 @@ for(let i=0; i<galleryImg.length; i++) {
 galleryItem.forEach(function (item, index) {
     item.addEventListener('click', function(){
         modal.classList.add('active');
-
+        commentBox.classList.add('active');
         modalImg.src = galleryImgFull[index].url;
         let commentsList = galleryImgFull[index].comments;
-        // if (commentsList.length > 0) {
+
         for (let x = 0; x < commentsList.length; x++) {
             const dC = document.createElement('div');
             dC.className = 'modal__comment';
@@ -52,9 +54,14 @@ galleryItem.forEach(function (item, index) {
 
             commentBox.prepend(dC);
         }
-        // }
+
+        postComment.addEventListener('click', function(){
+            console.log(newCommentText.textContent)
+        })
+
         modal.addEventListener('click', function(){
             modal.classList.remove('active');
+            commentBox.classList.remove('active');
             modalImg.src = '';
             let allComments = document.querySelectorAll('.modal__comment');
             if (allComments.length > 0) {
