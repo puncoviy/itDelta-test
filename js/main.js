@@ -6,9 +6,10 @@ const modalCommentText = document.querySelector('.modal__comment-text');
 const postComment = document.querySelector('.modal__new-comment-btn');
 const newCommentText = document.querySelector('.modal__new-comment-text');
 
-const galleryItem = document.querySelectorAll('.gallery__item');
+const galleryList = document.querySelector('.gallery__list');
 const galleryItemImg = document.querySelectorAll('.gallery__item-img');
 const galleryItemText = document.querySelectorAll('.gallery__item-text');
+
 let galleryImg = [
     {"id":237,"url":"https://picsum.photos/id/237/300/200"},
     {"id":238,"url":"https://picsum.photos/id/238/300/200"},
@@ -26,18 +27,50 @@ let galleryImgFull = [
     {"id":242,"url":"https://picsum.photos/id/242/600/400","comments":[]}
 ]
 
-for(let i=0; i<galleryImg.length; i++) {
-    galleryItemImg[i].src = galleryImg[i].url;
-    galleryItemText[i].textContent = "id: " + galleryImg[i].id;
-}
+// for(let i=0; i<galleryImg.length; i++) {
+//     galleryItemImg[i].src = galleryImg[i].url;
+//     galleryItemText[i].textContent = "id: " + galleryImg[i].id;
+// }
+
+galleryImg.forEach(function(item){
+    const galleryImgItem = document.createElement('li');
+    galleryImgItem.className = 'gallery__item';
+    galleryList.append(galleryImgItem);
+
+    const galleryImgItemPhoto = document.createElement('img');
+    galleryImgItemPhoto.className = 'gallery__item-img';
+    galleryImgItemPhoto.src = item.url;
+    galleryImgItemPhoto.alt = 'Фото от Ricardo Cooper';
+    galleryImgItem.appendChild(galleryImgItemPhoto);
+
+    const galleryImgItemText = document.createElement('p');
+    galleryImgItemText.className = 'gallery__item-text';
+    galleryImgItemText.textContent = 'id: ' + item.id;
+    galleryImgItem.appendChild(galleryImgItemText);
+})
+
+
+let galleryItem = document.querySelectorAll('.gallery__item');
+let ind;
 
 galleryItem.forEach(function (item, index) {
     item.addEventListener('click', function(){
         modal.classList.add('active');
         commentBox.classList.add('active');
         modalImg.src = galleryImgFull[index].url;
-        let commentsList = galleryImgFull[index].comments;
+        modal.addEventListener('click', function(){
+            modal.classList.remove('active');
+            commentBox.classList.remove('active');
+            newCommentText.value = '';
+            modalImg.src = '';
+            let allComments = document.querySelectorAll('.modal__comment');
+            if (allComments.length > 0) {
+                allComments.forEach (el => el.remove())
+            }
+        })
 
+        let commentsList = galleryImgFull[index].comments;
+        ind = index;
         for (let x = 0; x < commentsList.length; x++) {
             const dC = document.createElement('div');
             dC.className = 'modal__comment';
@@ -54,44 +87,34 @@ galleryItem.forEach(function (item, index) {
 
             commentBox.prepend(dC);
         }
-
-        postComment.addEventListener('click', function(){
-            let str = newCommentText.value;
-            if (!str.trim()) {
-                newCommentText.placeholder = 'Enter your message here';
-            } else {
-                let newComment = {};
-                newComment.text = newCommentText.value;
-                newComment.date = new Date();
-                commentsList.push(newComment);
-                
-                const dC = document.createElement('div');
-                dC.className = 'modal__comment';
-
-                const pD = document.createElement('p');
-                pD.className = 'modal__comment-date';
-                pD.textContent = new Date(newComment.date);
-                dC.appendChild(pD);
-
-                const pT = document.createElement('p');
-                pT.className = 'modal__comment-text';
-                pT.textContent = newComment.text;
-                dC.appendChild(pT);
-
-                commentBox.prepend(dC);
-                newCommentText.placeholder = '';
-                newCommentText.value = '';
-            }
-        })
-
-        modal.addEventListener('click', function(){
-            modal.classList.remove('active');
-            commentBox.classList.remove('active');
-            modalImg.src = '';
-            let allComments = document.querySelectorAll('.modal__comment');
-            if (allComments.length > 0) {
-                allComments.forEach (el => el.remove())
-            }
-        })
     })
+})
+
+postComment.addEventListener('click', function(){
+    let str = newCommentText.value;
+    if (!str.trim()) {
+        newCommentText.placeholder = 'Введите сообщение здесь';
+    } else {
+        let newComment = {};
+        newComment.text = newCommentText.value;
+        newComment.date = new Date();
+        galleryImgFull[ind].comments.push(newComment);
+        
+        const dC = document.createElement('div');
+        dC.className = 'modal__comment';
+
+        const pD = document.createElement('p');
+        pD.className = 'modal__comment-date';
+        pD.textContent = new Date(newComment.date);
+        dC.appendChild(pD);
+
+        const pT = document.createElement('p');
+        pT.className = 'modal__comment-text';
+        pT.textContent = newComment.text;
+        dC.appendChild(pT);
+
+        commentBox.prepend(dC);
+        newCommentText.placeholder = '';
+        newCommentText.value = '';
+    }
 })
