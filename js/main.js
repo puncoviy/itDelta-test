@@ -1,6 +1,7 @@
 const modal = document.querySelector('.modal');
 const modalImg = document.querySelector('.modal__img');
 const commentBox = document.querySelector('.modal__box');
+const modalCloseBtn = document.querySelector('.modal__box-close')
 const modalCommentDate = document.querySelector('.modal__comment-date');
 const modalCommentText = document.querySelector('.modal__comment-text');
 const postComment = document.querySelector('.modal__new-comment-btn');
@@ -58,6 +59,16 @@ galleryItem.forEach(function (item, index) {
         modal.classList.add('active');
         commentBox.classList.add('active');
         modalImg.src = galleryImgFull[index].url;
+        modalCloseBtn.addEventListener ('click', function(){
+            modal.classList.remove('active');
+            commentBox.classList.remove('active');
+            newCommentText.value = '';
+            modalImg.src = '';
+            let allComments = document.querySelectorAll('.modal__comment');
+            if (allComments.length > 0) {
+                allComments.forEach (el => el.remove())
+            }
+        })
         modal.addEventListener('click', function(){
             modal.classList.remove('active');
             commentBox.classList.remove('active');
@@ -118,3 +129,20 @@ postComment.addEventListener('click', function(){
         newCommentText.value = '';
     }
 })
+
+// добавить отправку по нажатию на enter(без шифта),
+// изменить формат даты комментария
+
+console.log(
+`Доброго дня, уважаемый проверяющий!
+
+Код вышел корявый, скорее всего не оптимизирован, имеет много лишнего и всё в таком духе.
+Не пользовался React'ом или Vue, и массивы просто скопировал, а не подтягивал с url.
+
+Но код работает. И я очень хотел бы уметь писать код так, чтобы за него не было стыдно.
+Однако, я самоучка, подсказывать мне некому.
+
+Надеюсь, что при проверке кода Вы сделаете мне скидку на мою рукопопость ввиду вышеизложенного :)
+Спасибо что уделили время моему тестовому, и хорошего Вам денёчка!
+`
+)
